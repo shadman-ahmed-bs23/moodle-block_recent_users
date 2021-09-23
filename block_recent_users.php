@@ -30,20 +30,37 @@ class block_recent_users extends block_base {
         $this->title = get_string('pluginname', 'block_recent_users');
     }
 
+    function has_config() {
+        return true;
+    }
+
+
     function get_content() {
         global $DB;
         if ($this->content !== NULL) {
             return $this->content;
         }
-        $usersstring = '';
-        $users = $DB->get_records('user');
-        foreach($users as $user) {
-            $usersstring .= $user->firstname . ' ' . $user->lastname . ' ' . '<br>';
-        }
 
+        $content = '';
+
+        $showcourses = get_config('block_recent_users', 'showcourses');
+        if($showcourses) {
+            $content .= '<b> Recent Courses: </b><br>';
+            $courses = $DB->get_records('course');
+            foreach ($courses as $course) {
+                $content .= $course->fullname . '<br>';
+            }
+        } else {
+            $content .= '<b> Recent Users: </b><br>';
+            $users = $DB->get_records('user');
+            foreach($users as $user) {
+                $content .= $user->firstname . ' ' . $user->lastname . ' ' . '<br>';
+            }
+        }
+        
         $this->content = new stdClass();
-        $this->content->text = $usersstring;
-        $this->content->footer= "This is the footer";
+        $this->content->text = $content;
+        $this->content->footer= "";
 
         return $this->content;
     }

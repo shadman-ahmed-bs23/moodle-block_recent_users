@@ -15,14 +15,19 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'block_recent_users'.
+ * Recent users block.
  *
  * @package    block_recent_users
  * @copyright  2021 Shadman Ahmed
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['recent_users:addinstance'] = 'Add a new recent users block';
-$string['recent_users:myaddinstance'] = 'Add a new recent users block to Dashboard';
-$string['recent_users'] = 'recent users';
-$string['pluginname'] = 'Recent Users/Courses';
+defined('MOODLE_INTERNAL') || die;
+
+if($ADMIN->fulltree) {
+    $settings->add(new admin_setting_configcheckbox('block_recent_users/showcourses',
+        'Show Courses',
+        'Show courses instead of users',
+        0));
+    
+}
