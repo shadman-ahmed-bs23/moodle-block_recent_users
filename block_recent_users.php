@@ -31,12 +31,18 @@ class block_recent_users extends block_base {
     }
 
     function get_content() {
+        global $DB;
         if ($this->content !== NULL) {
             return $this->content;
         }
+        $usersstring = '';
+        $users = $DB->get_records('user');
+        foreach($users as $user) {
+            $usersstring .= $user->firstname . ' ' . $user->lastname . ' ' . '<br>';
+        }
 
         $this->content = new stdClass();
-        $this->content->text = "this is the text";
+        $this->content->text = $usersstring;
         $this->content->footer= "This is the footer";
 
         return $this->content;
